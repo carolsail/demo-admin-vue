@@ -1,9 +1,7 @@
-import request from '@/utils/request'
+import Base from './Base'
 
-export function list(params) {
-  return request({
-    url: '/banner/index',
-    method: 'get',
-    params
-  })
-}
+class Banner extends Base {}
+
+const api = new Banner({controllerName: 'banner'})
+
+export default api

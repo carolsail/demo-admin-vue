@@ -1,26 +1,25 @@
+import Base from './Base'
 import request from '@/utils/request'
 
-export function login(data) {
-  return request({
-    url: '/token/get',
-    method: 'post',
-    data: {
-      account: data.username, 
-      password: data.password
-    }
-  })
+class User extends Base {
+
+  async login(params) {
+    const url = `${this.baseUrl()}/get`
+    const data = { account: params.username, password: params.password }
+    return request.post(url, data)
+  }
+
+  async getInfo() {
+    const url = `${this.baseUrl()}/current`
+    return request.get(url)
+  }
+
+  async logout() {
+    const url = `${this.baseUrl()}/logout`
+    return request.get(url)
+  }
 }
 
-export function getInfo() {
-  return request({
-    url: '/token/current',
-    method: 'get'
-  })
-}
+const api = new User({ controllerName: 'token' })
 
-export function logout() {
-  return request({
-    url: '/token/logout',
-    method: 'get'
-  })
-}
+export default api

@@ -23,6 +23,11 @@
           {{ scope.$index + 1 }}
         </template>
       </el-table-column>
+      <el-table-column label="Create Time" align="center" width="150px">
+        <template slot-scope="scope">
+          <span>{{ scope.row.create_time | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="Name">
         <template slot-scope="scope">
           {{ scope.row.name }}
@@ -41,12 +46,12 @@
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="currentPage" :limit.sync="listQuery.limit" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
   </div>
 </template>
 
 <script>
-import { list } from '@/api/banner'
+import api from '@/api/Banner'
 import waves from '@/directive/waves'
 import Pagination from '@/components/Pagination'
 
@@ -68,24 +73,16 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
-      currentPage: 1,
       listQuery: {
-        offset: 0,
-        limit: 1,
+        page: 1,
+        limit: 10,
         filter: {
           name: undefined
         },
         op: {
           name: 'like'
-        },
-        sort: 'id',
-        order: 'desc'
+        }
       }
-    }
-  },
-  watch: {
-    currentPage(v, old) {
-      this.listQuery.offset = (v - 1) * this.listQuery.limit
     }
   },
   created() {
@@ -93,19 +90,22 @@ export default {
   },
   methods: {
     handleFilter() {
-      this.currentPage = 1
+      this.listQuery.page = 1
       this.getList()
     },
     handleCreate() {
       alert(123)
     },
-    getList() {
+    async getList() {
       this.listLoading = true
-      list(this.listQuery).then(response => {
+      try{
+        const response = await api.list(this.listQuery)
         this.list = response.data.rows
         this.total = response.data.total
-        this.listLoading = false
-      })
+      }catch(error){
+        console.log(error)
+      }
+      this.listLoading = false
     }
   }
 }
