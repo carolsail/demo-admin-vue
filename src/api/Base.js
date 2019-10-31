@@ -36,8 +36,9 @@ export default class Base {
   }
 
   async delete(ids) {
+    const params = { ids: ids }
     const url = `${this.baseUrl()}/delete`
-    return request.get(url, ids)
+    return request.get(url, { params })
   }
 
   async info(id) {
