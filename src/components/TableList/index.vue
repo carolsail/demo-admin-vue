@@ -60,6 +60,10 @@ export default {
     api: {
       type: Object,
       default: () => ({})
+    },
+    url: {
+      type: Object,
+      default: () => ({})
     }
   },
   data() {
@@ -76,29 +80,35 @@ export default {
       pickerOptions: {
         shortcuts: [{
           text: '最近一周',
-          onClick(picker) {
+          onClick: picker => {
             const end = new Date()
             const start = new Date()
             start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
             picker.$emit('pick', [start, end])
+            this.handleFilter()
           }
         }, {
           text: '最近一个月',
-          onClick(picker) {
+          onClick: picker => {
             const end = new Date()
             const start = new Date()
             start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
             picker.$emit('pick', [start, end])
+            this.handleFilter()
           }
         }, {
           text: '最近三个月',
-          onClick(picker) {
+          onClick: picker => {
             const end = new Date()
             const start = new Date()
             start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
             picker.$emit('pick', [start, end])
+            this.handleFilter()
           }
-        }]
+        }],
+        onPick: dateRange => {
+          this.handleFilter()
+        }
       }
     }
   },
@@ -122,10 +132,14 @@ export default {
       this.getList()
     },
     handleCreate() {
-      alert('create')
+      if (this.url.create) {
+        this.$router.push(this.url.create)
+      }
     },
-    handleUpdate() {
-      alert('update')
+    handleUpdate(row) {
+      if (this.url.edit) {
+        this.$router.push(this.url.edit, row)
+      }
     },
     handleModifyStatus(row, status) {
       alert('update status')

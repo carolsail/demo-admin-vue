@@ -59,11 +59,25 @@ export const constantRoutes = [
     path: '/banner',
     component: Layout,
     redirect: '/banner/index',
+    meta: { title: 'Banner', icon: 'table' },
     children: [{
       path: 'index',
-      name: 'Banner',
+      name: 'BannerIndex',
       component: () => import('@/views/banner/index'),
-      meta: { title: 'Banner', icon: 'table' }
+      meta: { title: 'Lists', icon: 'table' }
+    },
+    {
+      path: 'create',
+      name: 'BannerCreate',
+      component: () => import('@/views/banner/create'),
+      meta: { title: 'Create', icon: 'table' }
+    },
+    {
+      path: 'edit',
+      name: 'BannerEdit',
+      component: () => import('@/views/banner/edit'),
+      meta: { title: 'Edit', icon: 'table' },
+      hidden: true
     }]
   },
 

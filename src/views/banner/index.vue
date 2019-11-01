@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <table-list :api="api" :op="op">
+    <table-list :api="api" :op="op" :url="url">
       <!-- 检索条件 -->
       <template #filter-item="{ filter, getList, pickerOptions }">
         <el-date-picker
@@ -58,6 +58,10 @@ export default {
       op: {
         name: 'like',
         create_time: 'RANGE'
+      },
+      url: {
+        create: '/banner/create',
+        edit: '/banner/edit'
       }
     }
   }

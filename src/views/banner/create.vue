@@ -1,37 +1,68 @@
 <template>
-<div>banner create</div>
-  <!-- <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-    <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-    <el-form-item label="Type" prop="type">
-        <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
-        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
-        </el-select>
-    </el-form-item>
-    <el-form-item label="Date" prop="timestamp">
-        <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
-    </el-form-item>
-    <el-form-item label="Title" prop="title">
-        <el-input v-model="temp.title" />
-    </el-form-item>
-    <el-form-item label="Status">
-        <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-        <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-        </el-select>
-    </el-form-item>
-    <el-form-item label="Imp">
-        <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
-    </el-form-item>
-    <el-form-item label="Remark">
-        <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
-    </el-form-item>
+  <div class="app-container">
+    <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px" class="demo-ruleForm">
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="name" prop="name">
+            <el-input v-model="ruleForm.name" />
+          </el-form-item>
+          <el-form-item label="url" prop="url">
+            <el-input v-model="ruleForm.url" />
+          </el-form-item>
+          <el-form-item label="status" prop="status">
+            <el-switch v-model="ruleForm.status" />
+          </el-form-item>
+          <el-form-item label="description" prop="desc">
+            <el-input v-model="ruleForm.desc" type="textarea" />
+          </el-form-item>
+          <el-form-item label="image">
+            <Upload v-model="ruleForm.img" />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+            <el-button @click="resetForm('ruleForm')">重置</el-button>
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
-    <div slot="footer" class="dialog-footer">
-    <el-button @click="dialogFormVisible = false">
-        Cancel
-    </el-button>
-    <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
-        Confirm
-    </el-button>
-    </div>
-  </el-dialog> -->
+  </div>
 </template>
+
+<script>
+import Upload from '@/components/Upload'
+export default {
+  components: { Upload },
+  data() {
+    return {
+      ruleForm: {
+        name: '',
+        url: '',
+        status: true,
+        desc: '',
+        img: ['/uploads/20190531/5d8551d84e7f099ca326c6796a509bf6.jpg', '/uploads/20190507/c85e9e64165831137494501dccc07f32.jpg']
+      },
+      rules: {
+        name: [
+          { required: true, message: '请输入名称', trigger: 'blur' },
+          { min: 3, max: 5, message: '长度3~5个字符', trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  methods: {
+    submitForm(formName) {
+      console.log(this.ruleForm)
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          console.log('submit')
+        } else {
+          console.log('error')
+        }
+      })
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields()
+    }
+  }
+}
+</script>
