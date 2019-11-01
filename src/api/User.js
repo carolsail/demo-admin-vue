@@ -2,7 +2,6 @@ import Base from './Base'
 import request from '@/utils/request'
 
 class User extends Base {
-
   async login(params) {
     const url = `${this.baseUrl()}/get`
     const data = { account: params.username, password: params.password }

@@ -39,7 +39,7 @@ export default {
         url: '',
         status: true,
         desc: '',
-        img: ['/uploads/20190531/5d8551d84e7f099ca326c6796a509bf6.jpg', '/uploads/20190507/c85e9e64165831137494501dccc07f32.jpg']
+        img: []
       },
       rules: {
         name: [

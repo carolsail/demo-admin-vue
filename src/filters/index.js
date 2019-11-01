@@ -66,3 +66,10 @@ export function toThousandFilter(num) {
 export function uppercaseFirst(string) {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
+
+/**
+ * 图片完整路径
+ */
+export function prefixImage(img) {
+  return process.env.VUE_APP_BASE_API + img
+}
