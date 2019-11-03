@@ -138,7 +138,7 @@ export default {
     },
     handleUpdate(row) {
       if (this.url.edit) {
-        this.$router.push(this.url.edit, row)
+        this.$router.push(this.url.edit + '/' + row.id)
       }
     },
     handleModifyStatus(row, status) {

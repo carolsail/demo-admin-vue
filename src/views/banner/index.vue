@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <table-list :api="api" :op="op" :url="url">
+    <Table v-bind="{ api, op, url }">
       <!-- 检索条件 -->
       <template #filter-item="{ filter, getList, pickerOptions }">
         <el-date-picker
@@ -42,19 +42,19 @@
           </template>
         </el-table-column>
       </template>
-    </table-list>
+    </Table>
   </div>
 </template>
 
 <script>
-import api from '@/api/Banner'
-import TableList from '@/components/TableList'
+import Api from '@/api/Banner'
+import Table from '@/components/Table'
 
 export default {
-  components: { TableList },
+  components: { Table },
   data() {
     return {
-      api: api,
+      api: Api,
       op: {
         name: 'like',
         create_time: 'RANGE'

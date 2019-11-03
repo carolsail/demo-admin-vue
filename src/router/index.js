@@ -73,7 +73,7 @@ export const constantRoutes = [
       meta: { title: 'Create', icon: 'table' }
     },
     {
-      path: 'edit',
+      path: 'edit/:id(\\d+)',
       name: 'BannerEdit',
       component: () => import('@/views/banner/edit'),
       meta: { title: 'Edit', icon: 'table' },

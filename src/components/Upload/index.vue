@@ -14,7 +14,7 @@
       </slot>
     </el-upload>
 
-    <div v-show="files.length>=1" class="file-preview">
+    <div v-show="files && files.length>=1" class="file-preview">
       <slot :files="files" name="preview">
         <ul>
           <li v-for="(file, k) in files" :key="k">

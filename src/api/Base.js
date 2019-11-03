@@ -27,12 +27,12 @@ export default class Base {
 
   async create(data) {
     const url = `${this.baseUrl()}/create`
-    return request.post(url, data)
+    return request.post(url, { data })
   }
 
   async edit(data) {
     const url = `${this.baseUrl()}/edit`
-    return request.post(url, data)
+    return request.post(url, { data })
   }
 
   async delete(ids) {
@@ -42,7 +42,7 @@ export default class Base {
   }
 
   async info(id) {
-    const url = `${this.baseUrl()}/info`
-    return request.post(url, id)
+    const url = `${this.baseUrl()}/info/` + id
+    return request.get(url)
   }
 }
