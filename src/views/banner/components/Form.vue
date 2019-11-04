@@ -16,7 +16,7 @@
             <el-form-item label="description" prop="description">
               <el-input v-model="ruleForm.description" type="textarea" />
             </el-form-item>
-            <el-form-item label="image">
+            <el-form-item label="image" prop="img">
               <Upload v-model="ruleForm.img" />
             </el-form-item>
           </el-col>
@@ -56,7 +56,7 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度3~5个字符', trigger: 'blur' }
+          { min: 1, max: 100, message: '长度1~100个字符', trigger: 'blur' }
         ]
       }
     }
@@ -76,7 +76,6 @@ export default {
         img: response.data.img ? [response.data.img] : [],
         id: response.data.id
       })
-      console.log(this.ruleForm)
     }
   }
 }

@@ -3,9 +3,8 @@ import request from '@/utils/request'
 
 class User extends Base {
   async login(params) {
-    const url = `${this.baseUrl()}/get`
-    const data = { account: params.username, password: params.password }
-    return request.post(url, data)
+    const url = `${this.baseUrl()}/login`
+    return request.post(url, params)
   }
 
   async getInfo() {
@@ -19,6 +18,6 @@ class User extends Base {
   }
 }
 
-const api = new User({ controllerName: 'token' })
+const api = new User({ controllerName: 'user' })
 
 export default api

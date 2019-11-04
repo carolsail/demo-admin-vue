@@ -4,6 +4,7 @@
       <slot name="filter-item" v-bind="listQuery" :getList="getList" :pickerOptions="pickerOptions" />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" size="small" @click="handleFilter">Search</el-button>
       <el-button v-waves class="filter-item" type="info" icon="el-icon-refresh" size="small" @click="handleReset">Reset</el-button>
+      <el-button v-show="hasBatchDelBtn" v-waves class="filter-item" type="danger" icon="el-icon-delete" size="small" @click="handleBatchDel">Batch Del</el-button>
       <el-button v-show="hasAddBtn" v-waves class="filter-item pull-right" type="success" icon="el-icon-plus" size="small" @click="handleCreate">Add</el-button>
     </div>
 
@@ -14,7 +15,8 @@
       border
       fit
       highlight-current-row
-      @sort-change="sortChange"
+      @sort-change="handleSortChange"
+      @selection-change="handleSelectionChange"
     >
       <slot name="table-item" />
       <el-table-column v-if="hasEditBtn || hasDelBtn" label="Actions" align="center" width="160" class-name="small-padding fixed-width">
@@ -36,6 +38,7 @@
 <script>
 import waves from '@/directive/waves'
 import Pagination from '@/components/Pagination'
+import { Loading } from 'element-ui'
 
 export default {
   components: { Pagination },
@@ -77,6 +80,7 @@ export default {
         filter: {},
         op: this.op
       },
+      multipleSelection: [],
       pickerOptions: {
         shortcuts: [{
           text: '最近一周',
@@ -112,15 +116,23 @@ export default {
       }
     }
   },
+  computed: {
+    hasBatchDelBtn() {
+      return this.multipleSelection.length
+    }
+  },
   created() {
     this.getList()
   },
   methods: {
-    sortChange(data) {
+    handleSortChange(data) {
       const { prop, order } = data
       this.listQuery.sort = prop
       this.listQuery.order = order === 'descending' ? 'desc' : 'asc'
       this.handleFilter()
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
     },
     handleFilter() {
       this.listQuery.page = 1
@@ -154,6 +166,26 @@ export default {
         this.getList()
       }).catch(err => {
         console.log(err)
+      })
+    },
+    handleBatchDel() {
+      const loadingInstance = Loading.service()
+      this.$confirm('Are you sure?', 'Warning', {
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(async() => {
+        let ids = ''
+        this.multipleSelection.forEach((e, k) => {
+          ids += e.id + ','
+        })
+        ids = ids.substring(0, ids.lastIndexOf(','))
+        await this.api.delete(ids)
+        this.getList()
+        loadingInstance.close()
+      }).catch(err => {
+        console.log(err)
+        loadingInstance.close()
       })
     },
     async getList() {

@@ -10,7 +10,7 @@
       :action="action"
     >
       <slot name="action">
-        <el-button size="small" type="info">Choose File</el-button>
+        <el-button :loading="loading" size="small" type="info">Choose File</el-button>
       </slot>
     </el-upload>
 
@@ -54,7 +54,8 @@ export default {
   },
   data() {
     return {
-      action: process.env.VUE_APP_BASE_API + '/ajax/upload'
+      action: process.env.VUE_APP_BASE_API + '/ajax/upload',
+      loading: false
     }
   },
   computed: {
@@ -75,18 +76,23 @@ export default {
         const arr = [response.val]
         this.emitInput(arr)
       }
+      this.loading = false
     },
     handleError(err) {
       console.log(err)
+      this.loading = false
     },
     handleBeforeUpload(file) {
+      this.loading = true
       const isTypeLimit = this.limitType.indexOf(file.type) >= 0
       const isSizeLimit = file.size / 1024 / 1024 < this.limitSize
       if (!isTypeLimit) {
         this.$message.error('上传文件格式有误!')
+        this.loading = false
       }
       if (!isSizeLimit) {
         this.$message.error(`上传文件大小不能超过 ${this.limitSize}MB!`)
+        this.loading = false
       }
       return isTypeLimit && isSizeLimit
     },
