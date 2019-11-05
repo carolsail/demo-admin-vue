@@ -54,8 +54,20 @@ service.interceptors.response.use(
       duration: 5 * 1000
     })
 
-    // 10002: Illegal token;  10003: Token expired;
-    if (res.error_code === 10002 || res.error_code === 10003) {
+    // 10002: 权限不足;  10003: 有误或过期token;
+    if (res.error_code === 10002) {
+      // to re-login
+      MessageBox.confirm('Your permission is insufficient, you can cancel to stay on this page, or log in again', 'Confirm logout', {
+        confirmButtonText: 'Re-Login',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        store.dispatch('user/resetToken').then(() => {
+          location.reload()
+        })
+      })
+    }
+    if (res.error_code === 10003) {
       // to re-login
       MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
         confirmButtonText: 'Re-Login',

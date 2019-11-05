@@ -55,14 +55,14 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      api.logout(state.token).then(() => {
+      try {
         commit('SET_TOKEN', '')
         removeToken()
         resetRouter()
         resolve()
-      }).catch(error => {
+      } catch (error) {
         reject(error)
-      })
+      }
     })
   },
 

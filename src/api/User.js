@@ -8,12 +8,7 @@ class User extends Base {
   }
 
   async getInfo() {
-    const url = `${this.baseUrl()}/current`
-    return request.get(url)
-  }
-
-  async logout() {
-    const url = `${this.baseUrl()}/logout`
+    const url = `${this.baseUrl()}/verify`
     return request.get(url)
   }
 }
