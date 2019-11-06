@@ -59,26 +59,41 @@ export const constantRoutes = [
     path: '/banner',
     component: Layout,
     redirect: '/banner/index',
-    meta: { title: 'Banner', icon: 'table' },
+    meta: { title: 'Banner', icon: 'example' },
     children: [{
       path: 'index',
       name: 'BannerIndex',
       component: () => import('@/views/banner/index'),
-      meta: { title: 'Lists', icon: 'table' }
+      meta: { title: 'Lists', icon: 'list' }
     },
     {
       path: 'create',
       name: 'BannerCreate',
       component: () => import('@/views/banner/create'),
-      meta: { title: 'Create', icon: 'table' }
+      meta: { title: 'Create', icon: 'edit' }
     },
     {
       path: 'edit/:id(\\d+)',
       name: 'BannerEdit',
       component: () => import('@/views/banner/edit'),
-      meta: { title: 'Edit', icon: 'table' },
+      meta: { title: 'Edit', noCache: true, icon: 'edit' },
       hidden: true
     }]
+  },
+
+  {
+    path: '/profile',
+    component: Layout,
+    redirect: '/profile/index',
+    hidden: true,
+    children: [
+      {
+        path: 'index',
+        name: 'Profile',
+        component: () => import('@/views/profile/index'),
+        meta: { title: 'Profile', icon: 'user', noCache: true }
+      }
+    ]
   },
 
   // 404 page must be placed at the end !!!

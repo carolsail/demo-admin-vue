@@ -11,6 +11,11 @@ class User extends Base {
     const url = `${this.baseUrl()}/verify`
     return request.get(url)
   }
+
+  async refreshToken() {
+    const url = `${this.baseUrl()}/refresh`
+    return request.get(url)
+  }
 }
 
 const api = new User({ controllerName: 'user' })

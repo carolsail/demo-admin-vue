@@ -4,6 +4,7 @@ import { resetRouter } from '@/router'
 
 const state = {
   token: getToken(),
+  id: '',
   name: '',
   avatar: ''
 }
@@ -11,6 +12,9 @@ const state = {
 const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
+  },
+  SET_ID: (state, id) => {
+    state.id = id
   },
   SET_NAME: (state, name) => {
     state.name = name
@@ -36,14 +40,15 @@ const actions = {
   },
 
   // get user info
-  async getInfo({ commit, state }) {
+  async getInfo({ commit }) {
     try {
-      const response = await api.getInfo(state.token)
+      const response = await api.getInfo()
       const { data } = response
       if (!data) {
         return Promise.reject('Verification failed, please Login again.')
       }
-      const { name, avatar } = data
+      const { id, name, avatar } = data
+      commit('SET_ID', id)
       commit('SET_NAME', name)
       commit('SET_AVATAR', avatar)
       return Promise.resolve(data)
@@ -53,7 +58,7 @@ const actions = {
   },
 
   // user logout
-  logout({ commit, state }) {
+  logout({ commit }) {
     return new Promise((resolve, reject) => {
       try {
         commit('SET_TOKEN', '')
@@ -73,7 +78,20 @@ const actions = {
       removeToken()
       resolve()
     })
+  },
+
+  async refresh({ dispatch, commit }) {
+    try {
+      const response = await api.refreshToken()
+      const { data } = response
+      commit('SET_TOKEN', data.token)
+      setToken(data.token)
+      return dispatch('getInfo')
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
+
 }
 
 export default {

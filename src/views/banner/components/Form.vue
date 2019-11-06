@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
     <Form v-bind="{ api, fn, redirect, ruleForm, rules }">
-      <template #default>
+      <template #default="{ handleSubmit }">
         <el-row>
           <el-col :span="12">
             <el-form-item label="name" prop="name">
-              <el-input v-model="ruleForm.name" />
+              <el-input v-model="ruleForm.name" @keyup.enter.native="handleSubmit()" />
             </el-form-item>
             <el-form-item label="url" prop="url">
               <el-input v-model="ruleForm.url" />
@@ -72,6 +72,8 @@ export default {
       const response = await Api.info(id)
       this.ruleForm = Object.assign(this.ruleForm, {
         name: response.data.name,
+        url: response.data.url,
+        status: response.data.is_disabled ? true : false,
         description: response.data.description,
         img: response.data.img ? [response.data.img] : [],
         id: response.data.id

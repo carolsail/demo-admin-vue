@@ -7,16 +7,13 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+          <img :src="user.avatar | prefixImage" class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <el-dropdown-item>
-            <span style="display:block;" @click="logout">Account Info</span>
-          </el-dropdown-item>
-          <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">Change Password</span>
-          </el-dropdown-item>
+          <router-link to="/profile/index">
+            <el-dropdown-item>Profile</el-dropdown-item>
+          </router-link>
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">Log Out</span>
           </el-dropdown-item>
@@ -39,7 +36,7 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'user'
     ])
   },
   methods: {
