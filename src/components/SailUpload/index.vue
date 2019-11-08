@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="sail-upload">
     <el-upload
       :data="dataObj"
       :multiple="multiple"

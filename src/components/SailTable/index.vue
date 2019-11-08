@@ -1,7 +1,7 @@
 <template>
-  <div class="table-container">
+  <div class="sail-table">
     <div class="filter-container clearfix">
-      <slot name="filter-item" v-bind="listQuery" :getList="getList" :pickerOptions="pickerOptions" />
+      <slot name="filter-item" v-bind="listQuery" :handleFilter="handleFilter" />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" size="small" @click="handleFilter">Search</el-button>
       <el-button v-waves class="filter-item" type="info" icon="el-icon-refresh" size="small" @click="handleReset">Reset</el-button>
       <el-button v-show="hasBatchDelBtn" v-waves class="filter-item" type="danger" icon="el-icon-delete" size="small" @click="handleBatchDel">Batch Del</el-button>
@@ -80,40 +80,7 @@ export default {
         filter: {},
         op: this.op
       },
-      multipleSelection: [],
-      pickerOptions: {
-        shortcuts: [{
-          text: '最近一周',
-          onClick: picker => {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-            picker.$emit('pick', [start, end])
-            this.handleFilter()
-          }
-        }, {
-          text: '最近一个月',
-          onClick: picker => {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-            picker.$emit('pick', [start, end])
-            this.handleFilter()
-          }
-        }, {
-          text: '最近三个月',
-          onClick: picker => {
-            const end = new Date()
-            const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-            picker.$emit('pick', [start, end])
-            this.handleFilter()
-          }
-        }],
-        onPick: dateRange => {
-          this.handleFilter()
-        }
-      }
+      multipleSelection: []
     }
   },
   computed: {
@@ -141,6 +108,7 @@ export default {
     handleReset() {
       this.listQuery.page = 1
       this.listQuery.filter = {}
+      this.$emit('handleReset')
       this.getList()
     },
     handleCreate() {

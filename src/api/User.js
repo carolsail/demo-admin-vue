@@ -16,6 +16,11 @@ class User extends Base {
     const url = `${this.baseUrl()}/refresh`
     return request.get(url)
   }
+
+  async changePassword(params) {
+    const url = `${this.baseUrl()}/change/password`
+    return request.post(url, params)
+  }
 }
 
 const api = new User({ controllerName: 'user' })

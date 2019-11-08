@@ -1,21 +1,10 @@
 <template>
   <div class="app-container">
-    <Table v-bind="{ api, op, url }">
+    <sail-table v-bind="{ api, op, url }" @handleReset="$refs.datepicker.reset()">
       <!-- 检索条件 -->
-      <template #filter-item="{ filter, getList, pickerOptions }">
-        <el-date-picker
-          v-model="filter.create_time"
-          type="daterange"
-          value-format="yyyy-MM-dd"
-          align="left"
-          unlink-panels
-          range-separator="to"
-          start-placeholder="Start"
-          end-placeholder="End"
-          :picker-options="pickerOptions"
-          size="small"
-        />
-        <el-input v-model="filter.name" placeholder="Name" style="width: 200px;" class="filter-item" size="small" @keyup.enter.native="getList()" />
+      <template #filter-item="{ filter, handleFilter, pickerOptions }">
+        <sail-date-picker ref="datepicker" v-model="filter.create_time" @handlePicker="handleFilter()" />
+        <el-input v-model="filter.name" placeholder="Name" style="width: 200px;" class="filter-item" size="small" @keyup.enter.native="handleFilter()" />
       </template>
       <!-- table展示项 -->
       <template #table-item>
@@ -43,16 +32,17 @@
           </template>
         </el-table-column>
       </template>
-    </Table>
+    </sail-table>
   </div>
 </template>
 
 <script>
 import Api from '@/api/Banner'
-import Table from '@/components/Table'
+import SailTable from '@/components/SailTable'
+import SailDatePicker from '@/components/SailDatePicker'
 
 export default {
-  components: { Table },
+  components: { SailTable, SailDatePicker },
   data() {
     return {
       api: Api,

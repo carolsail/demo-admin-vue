@@ -1,23 +1,29 @@
 <template>
-  <Form v-bind="{ api, fn, ruleForm, rules }" @success="handleSubmitSuccess">
+  <sail-form v-bind="{ api, fn, rules }" :rule-form.sync="ruleForm" @handleSubmit="handleSubmitSuccess">
     <template #default="{ handleSubmit }">
       <el-form-item label="Name" prop="name">
         <el-input v-model.trim="ruleForm.name" @keyup.enter.native="handleSubmit()" />
       </el-form-item>
       <el-form-item label="Avatar" prop="avatar">
-        <Upload v-model="ruleForm.avatar" />
+        <sail-upload v-model="ruleForm.avatar" />
       </el-form-item>
     </template>
-  </Form>
+  </sail-form>
 </template>
 
 <script>
-import Form from '@/components/Form'
-import Upload from '@/components/Upload'
+import SailForm from '@/components/SailForm'
+import SailUpload from '@/components/SailUpload'
 import Api from '@/api/User'
 
+const defaultForm = {
+  id: '',
+  name: '',
+  avatar: []
+}
+
 export default {
-  components: { Form, Upload },
+  components: { SailForm, SailUpload },
   props: {
     user: {
       type: Object,
@@ -34,12 +40,7 @@ export default {
     return {
       api: Api,
       fn: 'edit',
-      redirect: '/profile/index',
-      ruleForm: {
-        id: this.user.id,
-        name: this.user.name,
-        avatar: this.user.avatar ? [this.user.avatar] : []
-      },
+      ruleForm: Object.assign({}, defaultForm),
       rules: {
         name: [
           { required: true, message: '请输入名称', trigger: 'blur' },
@@ -47,6 +48,13 @@ export default {
         ]
       }
     }
+  },
+  mounted() {
+    this.ruleForm = Object.assign(this.ruleForm, {
+      id: this.user.id,
+      name: this.user.name,
+      avatar: this.user.avatar ? [this.user.avatar] : []
+    })
   },
   methods: {
     async handleSubmitSuccess(data) {

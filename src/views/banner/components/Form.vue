@@ -1,46 +1,48 @@
 <template>
   <div class="app-container">
-    <Form v-bind="{ api, fn, redirect, ruleForm, rules }">
+    <sail-form v-bind="{ api, fn, redirect, rules }" :rule-form.sync="ruleForm">
       <template #default="{ handleSubmit }">
         <el-row>
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item label="name" prop="name">
               <el-input v-model="ruleForm.name" @keyup.enter.native="handleSubmit()" />
             </el-form-item>
             <el-form-item label="url" prop="url">
               <el-input v-model="ruleForm.url" />
             </el-form-item>
-            <el-form-item label="status" prop="status">
-              <el-switch v-model="ruleForm.status" />
+            <el-form-item label="status" prop="is_disabled">
+              <el-switch v-model="ruleForm.is_disabled" />
             </el-form-item>
             <el-form-item label="description" prop="description">
-              <el-input v-model="ruleForm.description" type="textarea" />
+              <!-- <el-input v-model="ruleForm.description" type="textarea" /> -->
+              <tinymce v-model="ruleForm.description" :height="150" />
             </el-form-item>
             <el-form-item label="image" prop="img">
-              <Upload v-model="ruleForm.img" />
+              <sail-upload v-model="ruleForm.img" />
             </el-form-item>
           </el-col>
         </el-row>
       </template>
-    </Form>
+    </sail-form>
   </div>
 </template>
 
 <script>
-import Form from '@/components/Form'
-import Upload from '@/components/Upload'
+import SailForm from '@/components/SailForm'
+import SailUpload from '@/components/SailUpload'
+import Tinymce from '@/components/Tinymce'
 import Api from '@/api/Banner'
 
 const defaultForm = {
   name: '',
-  status: true,
+  is_disabled: true,
   url: '',
   description: '',
   img: []
 }
 
 export default {
-  components: { Form, Upload },
+  components: { SailForm, SailUpload, Tinymce },
   props: {
     isEdit: {
       type: Boolean,
@@ -61,10 +63,13 @@ export default {
       }
     }
   },
-  created() {
+  mounted() {
     if (this.isEdit) {
       const id = this.$route.params && this.$route.params.id
       this.fetchData(id)
+    } else {
+      // 触发里面watch，初始化表单初始数据
+      this.ruleForm = Object.assign({}, defaultForm)
     }
   },
   methods: {
@@ -73,7 +78,7 @@ export default {
       this.ruleForm = Object.assign(this.ruleForm, {
         name: response.data.name,
         url: response.data.url,
-        status: response.data.is_disabled ? true : false,
+        is_disabled: !!response.data.is_disabled,
         description: response.data.description,
         img: response.data.img ? [response.data.img] : [],
         id: response.data.id
