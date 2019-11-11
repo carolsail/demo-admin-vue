@@ -108,7 +108,6 @@ export default {
     handleReset() {
       this.listQuery.page = 1
       this.listQuery.filter = {}
-      this.$emit('handleReset')
       this.getList()
     },
     handleCreate() {

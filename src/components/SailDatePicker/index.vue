@@ -10,13 +10,10 @@
     end-placeholder="End"
     :picker-options="pickerOptions"
     size="small"
-    @change="handlePicker"
   />
 </template>
 
 <script>
-import _ from 'lodash'
-
 export default {
   props: {
     type: {
@@ -26,6 +23,10 @@ export default {
     format: {
       type: String,
       default: 'yyyy-MM-dd'
+    },
+    value: {
+      type: Array,
+      default: () => ([])
     }
   },
   data() {
@@ -56,8 +57,7 @@ export default {
             picker.$emit('pick', [start, end])
           }
         }]
-      },
-      val: undefined
+      }
     }
   },
   computed: {
@@ -69,23 +69,15 @@ export default {
           break
       }
       return options
-    }
-  },
-  methods: {
-    handlePicker(value) {
-      let data = _.cloneDeep(value)
-      if (Array.isArray(data)) {
-        if (data.length === 2 && this.type === 'daterange') {
-          data[0] += ' 00:00:00'
-          data[1] += ' 23:59:59'
-        }
-        data = data.join(' - ')
-      }
-      this.$emit('input', data)
-      this.$emit('handlePicker')
     },
-    reset() {
-      this.val = undefined
+    val: {
+      get() {
+        return this.value
+      },
+      set(value) {
+        this.$emit('input', value)
+        this.$emit('handleFilter')
+      }
     }
   }
 }

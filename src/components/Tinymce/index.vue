@@ -120,13 +120,16 @@ export default {
       const _this = this
       window.tinymce.init({
         selector: `#${this.tinymceId}`,
+        branding: false, // to disable "Powered by Tinymce"
         language: this.languageTypeList['en'],
         height: this.height,
         body_class: 'panel-body ',
         object_resizing: false,
         toolbar: this.toolbar.length > 0 ? this.toolbar : toolbar,
-        menubar: this.menubar,
+        // menubar: this.menubar,
+        menubar: false,
         plugins: plugins,
+        fontsize_formats: '8pt 11pt 14pt 18pt 24pt 36pt',
         end_container_on_empty_block: true,
         powerpaste_word_import: 'clean',
         code_dialog_height: 450,

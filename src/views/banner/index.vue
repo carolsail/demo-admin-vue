@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
-    <sail-table v-bind="{ api, op, url }" @handleReset="$refs.datepicker.reset()">
+    <sail-table v-bind="{ api, op, url }">
       <!-- 检索条件 -->
-      <template #filter-item="{ filter, handleFilter, pickerOptions }">
-        <sail-date-picker ref="datepicker" v-model="filter.create_time" @handlePicker="handleFilter()" />
+      <template #filter-item="{ filter, handleFilter }">
+        <sail-date-picker ref="datepicker" v-model="filter.create_time" @handleFilter="handleFilter()" />
         <el-input v-model="filter.name" placeholder="Name" style="width: 200px;" class="filter-item" size="small" @keyup.enter.native="handleFilter()" />
       </template>
       <!-- table展示项 -->

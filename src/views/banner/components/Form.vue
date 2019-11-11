@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <sail-form v-bind="{ api, fn, redirect, rules }" :rule-form.sync="ruleForm">
+    <sail-form v-bind="{ api, fn, redirect, rules }" :rule-form.sync="ruleForm" @handleReset="handleReset()">
       <template #default="{ handleSubmit }">
         <el-row>
           <el-col :span="24">
@@ -28,6 +28,7 @@
 </template>
 
 <script>
+/* global tinymce */
 import SailForm from '@/components/SailForm'
 import SailUpload from '@/components/SailUpload'
 import Tinymce from '@/components/Tinymce'
@@ -83,6 +84,9 @@ export default {
         img: response.data.img ? [response.data.img] : [],
         id: response.data.id
       })
+    },
+    handleReset() {
+      tinymce.activeEditor.setContent(this.ruleForm.description)
     }
   }
 }

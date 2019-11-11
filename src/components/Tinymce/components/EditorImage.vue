@@ -12,7 +12,7 @@
         :on-success="handleSuccess"
         :before-upload="beforeUpload"
         class="editor-slide-upload"
-        action="https://httpbin.org/post"
+        :action="action"
         list-type="picture-card"
       >
         <el-button size="small" type="primary">
@@ -42,6 +42,8 @@ export default {
   },
   data() {
     return {
+      // action: 'https://httpbin.org/post',
+      action: process.env.VUE_APP_BASE_API + '/ajax/upload',
       dialogVisible: false,
       listObj: {},
       fileList: []
@@ -63,11 +65,13 @@ export default {
       this.dialogVisible = false
     },
     handleSuccess(response, file) {
+      console.log(this.listObj)
       const uid = file.uid
       const objKeyArr = Object.keys(this.listObj)
       for (let i = 0, len = objKeyArr.length; i < len; i++) {
         if (this.listObj[objKeyArr[i]].uid === uid) {
-          this.listObj[objKeyArr[i]].url = response.files.file
+          // this.listObj[objKeyArr[i]].url = response.files.file
+          this.listObj[objKeyArr[i]].url = process.env.VUE_APP_BASE_API + response.val
           this.listObj[objKeyArr[i]].hasSuccess = true
           return
         }
