@@ -1,11 +1,12 @@
 <template>
   <div class="sail-table">
     <div class="filter-container clearfix">
+      <el-button v-show="hasAddBtn" v-waves class="filter-item" type="success" icon="el-icon-plus" size="small" @click="handleCreate">Add</el-button>
       <slot name="filter-item" v-bind="listQuery" :handleFilter="handleFilter" />
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" size="small" @click="handleFilter">Search</el-button>
       <el-button v-waves class="filter-item" type="info" icon="el-icon-refresh" size="small" @click="handleReset">Reset</el-button>
       <el-button v-show="hasBatchDelBtn" v-waves class="filter-item" type="danger" icon="el-icon-delete" size="small" @click="handleBatchDel">Batch Del</el-button>
-      <el-button v-show="hasAddBtn" v-waves class="filter-item pull-right" type="success" icon="el-icon-plus" size="small" @click="handleCreate">Add</el-button>
+      <el-button v-show="hasExportBtn" v-waves class="filter-item pull-right" type="warning" icon="el-icon-document-delete" size="small" @click="handleExportExcel">Export</el-button>
     </div>
 
     <el-table
@@ -38,7 +39,7 @@
 <script>
 import waves from '@/directive/waves'
 import Pagination from '@/components/Pagination'
-import { Loading } from 'element-ui'
+import { Loading, Message } from 'element-ui'
 
 export default {
   components: { Pagination },
@@ -53,6 +54,10 @@ export default {
       default: true
     },
     hasDelBtn: {
+      type: Boolean,
+      default: true
+    },
+    hasExportBtn: {
       type: Boolean,
       default: true
     },
@@ -155,6 +160,20 @@ export default {
         loadingInstance.close()
       })
     },
+    async handleExportExcel() {
+      if (!Object.keys(this.listQuery.filter).length) {
+        Message({
+          message: '请进行数据筛选',
+          type: 'error',
+          duration: 5 * 1000
+        })
+        return
+      }
+      const response = await this.api.export({ filter: this.listQuery.filter, op: this.op })
+      if (response.data.val) {
+        window.location.href = response.data.val
+      }
+    },
     async getList() {
       this.listLoading = true
       try {
@@ -169,3 +188,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.el-button+.el-button {
+  margin-left: 0;
+}
+</style>
