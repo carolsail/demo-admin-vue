@@ -1,12 +1,12 @@
 <template>
   <div class="sail-table">
     <div class="filter-container clearfix">
-      <el-button v-show="hasAddBtn" v-waves class="filter-item" type="success" icon="el-icon-plus" size="small" @click="handleCreate">Add</el-button>
+      <el-button v-show="hasAddBtn" v-waves class="filter-item" type="success" icon="el-icon-plus" title="Add" @click="handleCreate" />
       <slot name="filter-item" v-bind="listQuery" :handleFilter="handleFilter" />
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" size="small" @click="handleFilter">Search</el-button>
-      <el-button v-waves class="filter-item" type="info" icon="el-icon-refresh" size="small" @click="handleReset">Reset</el-button>
-      <el-button v-show="hasBatchDelBtn" v-waves class="filter-item" type="danger" icon="el-icon-delete" size="small" @click="handleBatchDel">Batch Del</el-button>
-      <el-button v-show="hasExportBtn" v-waves class="filter-item pull-right" type="warning" icon="el-icon-document-delete" size="small" @click="handleExportExcel">Export</el-button>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" title="Search" @click="handleFilter" />
+      <el-button v-waves class="filter-item" type="info" icon="el-icon-refresh" title="Reset" @click="handleReset" />
+      <el-button v-show="hasBatchDelBtn" v-waves class="filter-item" type="danger" icon="el-icon-delete" title="Batch Delete" @click="handleBatchDel" />
+      <el-button v-show="hasExportBtn" v-waves class="filter-item pull-right" type="warning" icon="el-icon-document-delete" title="Export Excel" @click="handleExportExcel" />
     </div>
 
     <el-table
@@ -22,12 +22,8 @@
       <slot name="table-item" />
       <el-table-column v-if="hasEditBtn || hasDelBtn" label="Actions" align="center" width="160" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button v-show="hasEditBtn" type="primary" size="mini" @click="handleUpdate(row)">
-            Edit
-          </el-button>
-          <el-button v-show="hasDelBtn" v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDel(row)">
-            Delete
-          </el-button>
+          <el-button v-show="hasEditBtn" type="primary" icon="el-icon-edit" size="mini" title="Edit" @click="handleUpdate(row)" />
+          <el-button v-show="hasDelBtn" v-if="row.status!='deleted'" type="danger" icon="el-icon-delete" size="mini" title="Delete" @click="handleDel(row)" />
         </template>
       </el-table-column>
     </el-table>

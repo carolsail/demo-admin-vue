@@ -3,8 +3,9 @@
     <sail-table v-bind="{ api, op, url }">
       <!-- 检索条件 -->
       <template #filter-item="{ filter, handleFilter }">
-        <sail-date-picker ref="datepicker" v-model="filter.create_time" @handleFilter="handleFilter()" />
-        <el-input v-model="filter.name" placeholder="Name" style="width: 200px;" class="filter-item" size="small" @keyup.enter.native="handleFilter()" />
+        <sail-date-picker v-model="filter.create_time" @handleFilter="handleFilter()" />
+        <el-input v-model="filter.name" placeholder="Name" style="width: 200px;" @keyup.enter.native="handleFilter()" />
+        <sail-select v-model="filter.is_disabled" v-bind="{ms_selected, ms_options}" style="width: 200px;" @handleFilter="handleFilter()" />
       </template>
       <!-- table展示项 -->
       <template #table-item>
@@ -40,16 +41,23 @@
 import Api from '@/api/Banner'
 import SailTable from '@/components/SailTable'
 import SailDatePicker from '@/components/SailDatePicker'
+import SailSelect from '@/components/SailSelect'
 
 export default {
-  components: { SailTable, SailDatePicker },
+  components: { SailTable, SailDatePicker, SailSelect },
   data() {
     return {
       api: Api,
       op: {
         name: 'like',
-        create_time: 'RANGE'
+        create_time: 'RANGE',
+        is_disabled: '='
       },
+      ms_selected: { option: 'no', value: '1' },
+      ms_options: [
+        { option: 'yes', value: '0' },
+        { option: 'no', value: '1' }
+      ],
       url: {
         create: '/banner/create',
         edit: '/banner/edit'

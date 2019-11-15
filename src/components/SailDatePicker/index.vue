@@ -9,7 +9,6 @@
     start-placeholder="Start"
     end-placeholder="End"
     :picker-options="pickerOptions"
-    size="small"
   />
 </template>
 
@@ -25,8 +24,8 @@ export default {
       default: 'yyyy-MM-dd'
     },
     value: {
-      type: Array,
-      default: () => ([])
+      type: [Array, String],
+      default: undefined
     }
   },
   data() {
