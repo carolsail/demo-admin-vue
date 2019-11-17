@@ -1,6 +1,6 @@
 <template>
   <div class="multiselect-container">
-    <multiselect v-model="selected" :options="options" :selected="selected" :multiple="multiple" label="option" track-by="option" />
+    <multiselect v-model="val" :options="options" :selected="selected" :multiple="multiple" label="option" track-by="option" />
   </div>
 </template>
 
@@ -9,11 +9,11 @@ import Multiselect from 'vue-multiselect'
 export default {
   components: { Multiselect },
   props: {
-    ms_selected: {
+    selected: {
       type: Object,
       default: () => ({})
     },
-    ms_options: {
+    options: {
       type: Array,
       default: () => ([])
     },
@@ -28,23 +28,26 @@ export default {
   },
   data() {
     return {
-      selected: this.ms_selected,
-      options: this.ms_options
+      val: this.selected,
+      clickSelect: false
     }
   },
   watch: {
-    selected(data){
-      if (data) {
-        this.$emit('input', data.value)
-      } else {
-        this.$emit('input', undefined)
+    val(data) {
+      this.clickSelect = true
+      const v = data ? data.value : undefined
+      if (this.multiple) {
+        
       }
+      this.$emit('input', v)
       this.$emit('handleFilter')
     },
     value(data) {
-      if (!data) {
+      if (!data && !this.clickSelect) {
+        this.val = this.selected
         this.$emit('input', this.selected.value)
       }
+      this.clickSelect = false
     }
   },
   mounted() {
