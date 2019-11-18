@@ -57,6 +57,6 @@ SailForm，将表单的提交进行了封装，省去表单中提交等功能的
 
 SailModel，封装element-ui中的model，可配合SailForm等其他组件灵活使用
 
-SailTable，封装Table列表，组合参数与服务端通过ajax数据交互
+SailTable，封装Table列表，集成搜索、重置、excel导出、添加、修改、删除等操作，组合参数与服务端通过ajax数据交互
 
 SailUpload，封装上传组件，支持单个或多个文件的上传
