@@ -5,7 +5,7 @@
       <template #filter-item="{ filter, handleFilter }">
         <sail-date-picker v-model="filter.create_time" @handleFilter="handleFilter()" />
         <el-input v-model="filter.name" placeholder="Name" style="width: 200px;" @keyup.enter.native="handleFilter()" />
-        <sail-select v-model="filter.is_disabled" v-bind="{selected, options}" style="width: 200px;" @handleFilter="handleFilter()" />
+        <sail-select v-model="filter.is_disabled" v-bind="{selected, options}" style="width: 230px;" @handleFilter="handleFilter()" />
       </template>
       <!-- table展示项 -->
       <template #table-item>
@@ -29,7 +29,7 @@
         </el-table-column>
         <el-table-column type="expand">
           <template slot-scope="scope">
-            <div>{{ scope.row.description }}</div>
+            <div v-html="scope.row.description" />
           </template>
         </el-table-column>
       </template>
@@ -53,7 +53,7 @@ export default {
         create_time: 'RANGE',
         is_disabled: '='
       },
-      selected: { option: 'no', value: '1' },
+      selected: { option: 'disable', value: undefined },
       options: [
         { option: 'yes', value: '0' },
         { option: 'no', value: '1' }
