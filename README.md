@@ -2,6 +2,8 @@
 
 基于vue-admin-template二次封装的管理后台
 
+服务器api接口的实现用到thinkphp5.1，地址：https://github.com/carolsail/demo-admin-api-tp5.git
+
 ## Build Setup
 
 
